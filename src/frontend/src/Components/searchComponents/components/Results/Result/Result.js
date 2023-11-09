@@ -60,7 +60,7 @@ export default function Result(props) {
                         currentData = currentData[i]
                     }
                 }
-                out += currentData
+                out += currentData + " | "
             }
             return out
         } catch (err) {
@@ -70,22 +70,22 @@ export default function Result(props) {
     }
 
     const theme = {
-        base00: 'white',
-        base01: 'white',
-        base02: 'white',
-        base03: 'white',
-        base04: 'white',
-        base05: 'white',
-        base06: 'white',
-        base07: 'white',
-        base08: 'white',
-        base09: 'white',
-        base0A: 'white',
-        base0B: 'white',
-        base0C: 'white',
-        base0D: 'white',
-        base0E: 'white',
-        base0F: 'white'
+        base00: 'black',
+        base01: 'black',
+        base02: 'black',
+        base03: 'black',
+        base04: 'black',
+        base05: 'black',
+        base06: 'black',
+        base07: 'black',
+        base08: 'black',
+        base09: 'black',
+        base0A: 'black',
+        base0B: 'black',
+        base0C: 'black',
+        base0D: 'black',
+        base0E: 'black',
+        base0F: 'black'
     };
 
 
@@ -114,7 +114,27 @@ export default function Result(props) {
                 </div>   
                 </>
             )
-        } else {
+        } else if(data?.filename.includes(".txt") && data?.filename.includes("-stage1")){
+           
+            const stringsplit = data?.filename.split('/')
+            let result = ''
+            if(stringsplit === 0){
+                result = data?.filename
+            } else{
+                result = stringsplit[stringsplit.length - 1]
+            }
+            result = result.replace('.txt','')
+            const citation = `newinvoice-stage2/newinvoice-stage1/${result}`
+            //const citation = `${selectedIndex.name}-stage2/${selectedIndex.name}-stage1/${result}`
+            
+            return (
+                <>
+                <div>
+                    Original Document : <span onClick={onOriginalDoc} style={{ color: "blue" }}>{citation}</span>
+                </div>   
+                </>
+            )
+        }else {
             return (
                 <>
                 <div>
@@ -127,7 +147,24 @@ export default function Result(props) {
     }
 
     const originalUrl = () => {
-        return `/api/viewpdf?container=documents&filename=${props.data.filename}`
+        if(props.data.filename.includes(".txt") && props.data.filename.includes("-stage1")){
+           
+            const stringsplit = props.data?.filename.split('/')
+            let result = ''
+            if(stringsplit === 0){
+                result = props.data?.filename
+            } else{
+                result = stringsplit[stringsplit.length - 1]
+            }
+            result = result.replace('.txt','')
+            const citation = `newinvoice-stage2/newinvoice-stage1/${result}`
+            //const citation = `${selectedIndex.name}-stage2/${selectedIndex.name}-stage1/${result}`
+            
+            return `/api/viewpdf?container=documents&filename=${citation}`
+        } else{
+            return `/api/viewpdf?container=documents&filename=${props.data.filename}`
+        }
+        
     }
 
     return (

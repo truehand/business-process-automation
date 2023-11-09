@@ -14,14 +14,17 @@ import DocumentTranslationDialog from '../Components/Dialogs/DocumentTranslation
 import SpeechToTextDialog from '../Components/SpeechToText';
 import ChangeDataDialog from '../Components/Dialogs/ChangeDataDialog';
 import VideoIndexerDialog from '../Components/Dialogs/VideoIndexerDialog';
-//import CopyDialog from './CopyDialog';
+import ToTxtByPageDialog from '../Components/Dialogs/ToTxtDialogByPage'
 import ToTxtDialog from '../Components/Dialogs/ToTxtDialog';
 import Prices from '../Components/Prices/Prices'
 import OpenAiGenericDialog from '../Components/Dialogs/OpenAiGenericDialog';
 import SpliceDocument from '../Components/Dialogs/SpliceDocument';
-
+import JsonToTextDialog from '../Components/Dialogs/JSONToTextDialog';
+import TableToText from '../Components/Dialogs/TableToText';
 import { sc } from '../Components/serviceCatalog'
 import { Button, Text } from '@fluentui/react-northstar'
+import OpenAiRestDialog from '../Components/Dialogs/OpenAiRestDialog';
+import AnalyzeImageDialog from '../Components/Dialogs/AnalyzeImageDialog';
 
 
 export default function Stages(props) {
@@ -39,11 +42,16 @@ export default function Stages(props) {
     const [hideHuggingFaceDialog, setHideHuggingFaceDialog] = useState(true)
     const [hideChangeDataDialog, setHideChangeDataDialog] = useState(true)
     const [hideToTxtDialog, setHideToTxtDialog] = useState(true)
+    const [hideToTxtByPageDialog, setHideToTxtByPageDialog] = useState(true)
     const [hideSttDialog, setHideSttDialog] = useState(true)
     const [hideOpenAiDialog, setHideOpenAiDialog] = useState(true)
+    const [hideOpenAiRestDialog, setHideOpenAiRestDialog] = useState(true)
     const [hideVideoIndexerDialog, setHideVideoIndexerDialog] = useState(true)
     const [hideSpliceDocumentDialog, setHideSpliceDocumentDialog] = useState(true)
     const [currentOption, setCurrentOption] = useState(null)
+    const [hideJsonToTextDialog, setHideJsonToTextDialog] = useState(true)
+    const [hideTableToTextDialog, setHideTableToTextDialog] = useState(true)
+    const [hideAnalyzeImageDialog, setHideAnalyzeImageDialog] = useState(true)
     //const [price, setPrice] = useState(0)
     // const [numDocuments, setNumDocuments] = useState(0)
     // const [minutesPerAudioFile, setMinutesPerAudioFile] = useState(0)
@@ -60,27 +68,6 @@ export default function Stages(props) {
         getSC()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    // useEffect(() => {
-    //     setPrice(() => {
-    //         if (stages && stages.length > 0) {
-    //             let _price = 73 //cost of default service plan S1
-    //             let _pages = 0
-    //             if (stages[0].name === 'wav') { //best guess at audio to document conversion (1 hour = 30 pages)
-    //                 const _hours = numDocuments * ((minutesPerAudioFile) / 60)
-    //                 _pages = _hours * 30
-    //             } else {
-    //                 _pages = numDocuments * pagesPerDocument
-    //             }
-    //             for (const stage of stages) {
-    //                 _price += stage.getPrice(_pages)
-    //             }
-    //             return _price
-    //         }
-    //         return 0
-    //     })
-
-    // }, [stages, numDocuments, minutesPerAudioFile, pagesPerDocument])
 
     const onDone = async () => {
         try {
@@ -153,7 +140,13 @@ export default function Stages(props) {
         } else if (event.name === 'totxt') {
             setCurrentOption(_.cloneDeep(event))
             setHideToTxtDialog(false)
-        } else if (event.name === 'changeOutput') {
+        } else if (event.name === 'textSegmentation') {
+            setCurrentOption(_.cloneDeep(event))
+            setHideToTxtDialog(false)
+        }else if (event.name === 'textSegmentationByPage' || event.name === 'splitPdf') {
+            setCurrentOption(_.cloneDeep(event))
+            setHideToTxtByPageDialog(false)
+        }else if (event.name === 'changeOutput') {
             setCurrentOption(_.cloneDeep(event))
             setHideChangeDataDialog(false)
         } else if (event.name === 'stt' || event.name === 'sttBatch') {
@@ -180,9 +173,21 @@ export default function Stages(props) {
         } else if (event.name === 'openaiGeneric') {
             setCurrentOption(_.cloneDeep(event))
             setHideOpenAiDialog(false)
+        }else if (event.name === 'openaiRest' || event.name === 'piiToOpenaiRest') {
+            setCurrentOption(_.cloneDeep(event))
+            setHideOpenAiRestDialog(false)
         }else if (event.name === 'spliceDocument') {
             setCurrentOption(_.cloneDeep(event))
             setHideSpliceDocumentDialog(false)
+        }else if (event.name === 'jsonToText') {
+            setCurrentOption(_.cloneDeep(event))
+            setHideJsonToTextDialog(false)
+        }else if (event.name === 'tableToText') {
+            setCurrentOption(_.cloneDeep(event))
+            setHideTableToTextDialog(false)
+        }else if (event.name === 'imageAnalysis') {
+            setCurrentOption(_.cloneDeep(event))
+            setHideAnalyzeImageDialog(false)
         }else {
             addItemToPipeline(event)
         }
@@ -223,9 +228,14 @@ export default function Stages(props) {
                 <SpeechToTextDialog hideDialog={hideSttDialog} setHideDialog={setHideSttDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
                 <ChangeDataDialog hideDialog={hideChangeDataDialog} setHideDialog={setHideChangeDataDialog} items={stages} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
                 <ToTxtDialog hideDialog={hideToTxtDialog} setHideDialog={setHideToTxtDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
+                <ToTxtByPageDialog hideDialog={hideToTxtByPageDialog} setHideDialog={setHideToTxtByPageDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
                 <VideoIndexerDialog hideDialog={hideVideoIndexerDialog} setHideDialog={setHideVideoIndexerDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
                 <OpenAiGenericDialog hideDialog={hideOpenAiDialog} setHideDialog={setHideOpenAiDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
+                <OpenAiRestDialog hideDialog={hideOpenAiRestDialog} setHideDialog={setHideOpenAiRestDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
                 <SpliceDocument hideDialog={hideSpliceDocumentDialog} setHideDialog={setHideSpliceDocumentDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
+                <JsonToTextDialog hideDialog={hideJsonToTextDialog} setHideDialog={setHideJsonToTextDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
+                <TableToText hideDialog={hideTableToTextDialog} setHideDialog={setHideTableToTextDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
+                <AnalyzeImageDialog hideDialog={hideAnalyzeImageDialog} setHideDialog={setHideAnalyzeImageDialog} currentOption={currentOption} addItemToPipeline={addItemToPipeline} />
                 {renderOptions(options)}
             </>
         )

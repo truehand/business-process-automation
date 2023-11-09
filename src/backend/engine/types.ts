@@ -40,5 +40,6 @@ export interface BpaServiceObject {
     serviceSpecificConfig ?: any
     stages ?: any
     index ?: number
-    dbId ?: string
+    id ?: string
+    vector : []
 }

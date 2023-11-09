@@ -1,31 +1,30 @@
 import { Text, Button } from '@fluentui/react-northstar';
-import { useEffect, useState } from 'react';
-import axios from 'axios'
+// import { useEffect, useState } from 'react';
+// import axios from 'axios'
 
 export default function Home(props) {
 
-    const [isOAIDeployed, setIsOAIDeployed] = useState(false)
+    // const [isOAIDeployed, setIsOAIDeployed] = useState(false)
 
-    useEffect(() => {
-        axios.get("/api/isdeployed").then(v => {
-            setIsOAIDeployed(v.data.isDeployed)
-        })
-    }, [])
+    // useEffect(() => {
+    //     axios.get("/api/isdeployed").then(v => {
+    //         setIsOAIDeployed(v.data.isDeployed)
+    //     })
+    // }, [])
 
-    const renderOAIOptions = () => {
-        if (isOAIDeployed) {
-            return (
-                <>
-                    |
-                    <Button id="OPENAI_VIEWER" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="OpenAI Viewer" />
-                    |
-                    <Button id="VECTOR_SEARCH" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="OpenAI Vector Search Application" />
-                </>
+    // const renderOAIOptions = () => {
+    //     if (isOAIDeployed) {
+    //         return (
+    //             <>
+                    
+    //                 |
+    //                 <Button id="VECTOR_SEARCH" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="OpenAI Vector Search Application" />
+    //             </>
                 
             
-            )
-        }
-    }
+    //         )
+    //     }
+    // }
 
     return (
         <div style={{ paddingLeft: "0px", paddingTop: "50px" }}>
@@ -43,14 +42,18 @@ export default function Home(props) {
 
             <Text weight="semibold" style={{ fontSize: "18px", display: "block", marginBottom: "20px" }}>What would you like to do?</Text>
             {/* <div style={{display:"flex", paddingTop : "50px"}}> */}
-            <Button id="CONFIGURE_PIPELINE" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)", paddingLeft: "0px" }} content="Configure A New Pipeline" />
+            <Button id="CONFIGURE_PIPELINE" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)", paddingLeft: "0px" }} content="Create/Update/Delete Pipelines" />
             |
             <Button id="CURRENT_PIPELINE" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="View The Existing Pipeline " />
             |
             <Button id="UPLOAD_DOCUMENTS" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="Ingest Documents" />
             |
             <Button id="VIEW_INSIGHTS" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="Sample Search Application" />
-            {renderOAIOptions()}
+            |
+            <Button id="ENTERPRISE_SEARCH" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="Enterprise Search Demo" />
+            |
+            <Button id="OPENAI_VIEWER" onClick={(e) => props.onClick(e)} text style={{ color: "rgb(0, 120, 212)" }} content="Result Viewer" />
+            {/* {renderOAIOptions()} */}
 
             {/* </div> */}
         </div>

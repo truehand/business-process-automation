@@ -9,34 +9,13 @@ import SelectPipeline from '../Components/SelectPipeline';
 import ViewInsights from './ViewInsights';
 import OpenAiViewer from './OpenAiViewer';
 import VectorSearch from './VectorSearch';
-//import Search from '../Components/searchComponents/pages/Search/Search'
-//import AppHeader from '../Components/searchComponents/components/AppHeader/AppHeader';
-//import { searchHtml } from './searchHtml'
-//const template = { __html: searchHtml };
+import EnterpriseSearch from './chat/Chat'
+import CogSearch from './CogSearch';
 
 export default function Content(props) {
 
     const [selectedMenuItem, setSelectedMenuItem] = useState("HOME");
     const [breadCrumbItems, setBreadCrumbItems] = useState([])
-    //const [userInfo, setUserInfo] = useState();
-
-    // useEffect(() => {
-    //     getUserInfo().then(value => {
-    //         setUserInfo(value)
-    //     })
-    // }, [])
-
-    // const getUserInfo = async () => {
-    //     try {
-    //         const response = await fetch('/.auth/me');
-    //         const payload = await response.json();
-    //         const { clientPrincipal } = payload;
-    //         return clientPrincipal;
-    //     } catch (error) {
-    //         console.error('No profile could be found');
-    //         return undefined;
-    //     }
-    // }
 
     const onBreadcrumbHome = () => {
         setSelectedMenuItem("HOME")
@@ -64,16 +43,28 @@ export default function Content(props) {
                 breadCrumbItems.push({ text: 'Upload Documents', key: 'UPLOAD_DOCUMENTS' })
                 setBreadCrumbItems(breadCrumbItems)
                 break
+            case 'COG_SEARCH':
+                setSelectedMenuItem('COG_SEARCH')
+                breadCrumbItems.push({ text: 'Home', key: 'home', onClick: onBreadcrumbHome })
+                breadCrumbItems.push({ text: 'Upload Documents', key: 'COG_SEARCH' })
+                setBreadCrumbItems(breadCrumbItems)
+                break
             case 'VIEW_INSIGHTS':
                 setSelectedMenuItem('VIEW_INSIGHTS')
                 breadCrumbItems.push({ text: 'Home', key: 'home', onClick: onBreadcrumbHome })
                 breadCrumbItems.push({ text: 'View Insights', key: 'VIEW_INSIGHTS' })
                 setBreadCrumbItems(breadCrumbItems)
                 break
+            case 'ENTERPRISE_SEARCH':
+                setSelectedMenuItem('ENTERPRISE_SEARCH')
+                breadCrumbItems.push({ text: 'Home', key: 'home', onClick: onBreadcrumbHome })
+                breadCrumbItems.push({ text: 'Cognitive Search Demo', key: 'ENTERPRISE_SEARCH' })
+                setBreadCrumbItems(breadCrumbItems)
+                break
             case 'OPENAI_VIEWER':
                 setSelectedMenuItem('OPENAI_VIEWER')
                 breadCrumbItems.push({ text: 'Home', key: 'home', onClick: onBreadcrumbHome })
-                breadCrumbItems.push({ text: 'OpenAI Viewer', key: 'OPENAI_VIEWER' })
+                breadCrumbItems.push({ text: 'Result Viewer', key: 'OPENAI_VIEWER' })
                 break;
             case 'VECTOR_SEARCH':
                 setSelectedMenuItem('VECTOR_SEARCH')
@@ -96,12 +87,16 @@ export default function Content(props) {
                 return (<SelectPipeline theme={props.theme} onSelectContent={onSelectContent} />)
             case 'UPLOAD_DOCUMENTS':
                 return (<Upload theme={props.theme} />)
+            case 'COG_SEARCH':
+                return (<CogSearch theme={props.theme} />)
             case 'VIEW_INSIGHTS':
                 return (<ViewInsights />)
             case 'OPENAI_VIEWER':
                 return (<OpenAiViewer />)
             case 'VECTOR_SEARCH':
                 return (<VectorSearch />)
+            case 'ENTERPRISE_SEARCH':
+                return (<EnterpriseSearch />)
 
             default:
                 return (<Home />)
@@ -161,6 +156,20 @@ export default function Content(props) {
                         Ingest Documents
                     </Breadcrumb.Item>
                 </>)
+            case 'COG_SEARCH':
+                return (<>
+                    <Breadcrumb >
+                        <Breadcrumb.Item style={{ paddingLeft: "0px" }}>
+                            <Breadcrumb.Link href="" onClick={onBreadcrumbHome}>Home</Breadcrumb.Link>
+                        </Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Breadcrumb.Divider>
+                        <ChevronEndMediumIcon />
+                    </Breadcrumb.Divider>
+                    <Breadcrumb.Item>
+                        Cognitive Search
+                    </Breadcrumb.Item>
+                </>)
 
             case 'VIEW_INSIGHTS':
                 return (<>
@@ -177,6 +186,22 @@ export default function Content(props) {
                     </Breadcrumb.Item>
                 </>)
 
+
+            case 'ENTERPRISE_SEARCH':
+                return (<>
+                    <Breadcrumb >
+                        <Breadcrumb.Item style={{ paddingLeft: "0px" }}>
+                            <Breadcrumb.Link href="" onClick={onBreadcrumbHome}>Home</Breadcrumb.Link>
+                        </Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Breadcrumb.Divider>
+                        <ChevronEndMediumIcon />
+                    </Breadcrumb.Divider>
+                    <Breadcrumb.Item>
+                        Enterprise Search Demo
+                    </Breadcrumb.Item>
+                </>)
+
             case 'OPENAI_VIEWER':
                 return (<>
                     <Breadcrumb >
@@ -188,7 +213,7 @@ export default function Content(props) {
                         <ChevronEndMediumIcon />
                     </Breadcrumb.Divider>
                     <Breadcrumb.Item>
-                        OpenAI Viewer
+                        Result Viewer
                     </Breadcrumb.Item>
                 </>)
 
@@ -212,21 +237,9 @@ export default function Content(props) {
         }
     }
 
-    // const provider = "aad"
-    // const redirect = window.location.pathname;
-    // const showUserInfo = () => {
-    //     if (userInfo) {
-    //         return (<div>{JSON.stringify(userInfo)}</div>)
-    //     }
-    // }
-
     return (
         <div className="content" >
-            {/* <a key={provider} href={`/.auth/login/aad?post_login_redirect_uri=${redirect}`}>
-                {provider}
-                {showUserInfo()}
-            </a> */}
-            <div style={{ paddingLeft: "0px", paddingTop: "50px", width: "80%", marginLeft: "auto", marginRight: "auto" }}>
+            <div style={{ paddingLeft: "0px", paddingTop: "50px", height: "100%", width: "80%", marginLeft: "auto", marginRight: "auto" }}>
                 {renderBreadcrumb()}
                 {renderContent()}
             </div>

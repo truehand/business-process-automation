@@ -32,13 +32,15 @@ export class DocumentTranslation {
             pipeline: input.pipeline,
             type : input.type,
             aggregatedResults : input.aggregatedResults,
-            resultsIndexes : input.resultsIndexes
+            resultsIndexes : input.resultsIndexes,
+            id: input.id,
+            vector: input.vector
         }
     }
 
     public translate = async (filename: string, targetLanguage: string, sourceLanguage : string) => {
 
-        const sasSourseUrl = await this._getSasUrl(this._storageAccountName, "documents", this._storageAccountKey)
+        const sasSourceUrl = await this._getSasUrl(this._storageAccountName, "documents", this._storageAccountKey)
         const sasTargetUrl = await this._getSasUrl(this._storageAccountName, "translated-documents", this._storageAccountKey)
         const parsedFilename = this._parseFilename(filename)
         const inputs = {
@@ -46,7 +48,7 @@ export class DocumentTranslation {
                 {
                     "storageType": "File",
                     "source": {
-                        "sourceUrl": `https://${this._storageAccountName}.blob.core.windows.net/documents/${filename}?${sasSourseUrl}`,
+                        "sourceUrl": `https://${this._storageAccountName}.blob.core.windows.net/documents/${filename}?${sasSourceUrl}`,
                         "language" : sourceLanguage
                     },
                     "targets": [

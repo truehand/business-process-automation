@@ -4,12 +4,16 @@ import { Dialog, Text, TextArea } from '@fluentui/react-northstar';
 
 export default function ToTxtDialog(props) {
 
-    const [container, setContainer] = useState("")
+    // eslint-disable-next-line
+    const [container,_] = useState("documents")
+    const [folder, setFolder] = useState("")
+    const [maxSegment, setMaxSegment] = useState("")
+    const [overlap, setOverlap] = useState("")
 
     const onDialogSave = (event) => {
         console.log(event)
         const newOption = props.currentOption
-        newOption.serviceSpecificConfig = { containerName : container }
+        newOption.serviceSpecificConfig = { containerName : container, folderName : folder, maxSegment : maxSegment, overlap : overlap }
         props.setHideDialog(true)
         props.addItemToPipeline(newOption)
     }
@@ -18,8 +22,19 @@ export default function ToTxtDialog(props) {
         props.setHideDialog(true)
     }
 
-    const onDialogChange = (event, text) => {
-        setContainer(text.value)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const onFolderChange = (_, text) => {
+        setFolder(text.value)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const onMaxSegmentChange = (_, text) => {
+        setMaxSegment(text.value)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const onOverlapChange = (_, text) => {
+        setOverlap(text.value)
     }
 
     return (
@@ -30,10 +45,18 @@ export default function ToTxtDialog(props) {
                     <div style={{
                             display: 'block', marginBottom: "10px"
                         }}>
-                        <Text content="Container Name" style={{
+                        <Text content="Destination Pipeline for Output" style={{
                             display: 'block', marginBottom: "10px"
                         }} />
-                        <TextArea value={container} onChange={onDialogChange}/>
+                        <TextArea value={folder} onChange={onFolderChange} style={{lineHeight: "8px"}}/>
+                        <Text content="Maximum Segment (number of characters)" style={{
+                            display: 'block', marginBottom: "10px"
+                        }} />
+                        <TextArea value={maxSegment} onChange={onMaxSegmentChange} style={{lineHeight: "8px"}}/>
+                        <Text content="Text Overlap (number of characters)" style={{
+                            display: 'block', marginBottom: "10px"
+                        }} />
+                        <TextArea value={overlap} onChange={onOverlapChange} style={{lineHeight: "8px"}}/>
                     </div>
                 </>}
             open={!props.hideDialog}
